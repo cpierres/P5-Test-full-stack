@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  mysql:
+    image: mysql:8
+    container_name: mysql8-data-ocr-P5
+    restart: always
+    environment:
+      MYSQL_DATABASE: test
+      MYSQL_USER: user
+      MYSQL_PASSWORD: 123456
+      MYSQL_ROOT_PASSWORD: opencr_pw_root
+    ports:
+      - "3306:3306"
+    volumes:
+      - N:/docker/mysql8-data-ocr-P5:/var/lib/mysql

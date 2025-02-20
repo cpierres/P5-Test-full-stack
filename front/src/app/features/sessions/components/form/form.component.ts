@@ -46,6 +46,10 @@ export class FormComponent implements OnInit {
     }
   }
 
+  setId(id: string): void {
+    this.id = id;
+  }
+
   public submit(): void {
     const session = this.sessionForm?.value as Session;
 

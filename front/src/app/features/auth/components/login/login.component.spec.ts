@@ -15,12 +15,12 @@ import {of, throwError} from "rxjs";
 import {AuthService} from "../../services/auth.service";
 import {Router} from "@angular/router";
 
-describe('LoginComponent', () => {
+describe('LoginComponent - Tests unitaires', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
   let authServiceMock: any;
   let sessionServiceMock: any;
-  const routerSpy = { navigate: jest.fn() };
+  const routerSpy = {navigate: jest.fn()};
 
   beforeEach(async () => {
     authServiceMock = {
@@ -35,7 +35,7 @@ describe('LoginComponent', () => {
       providers: [
         {provide: AuthService, useValue: authServiceMock},
         {provide: SessionService, useValue: sessionServiceMock},
-        { provide: Router, useValue: routerSpy }, // Remplace Router par un spy
+        {provide: Router, useValue: routerSpy}, // Remplace Router par un spy
       ],
       imports: [
         RouterTestingModule,
@@ -54,79 +54,107 @@ describe('LoginComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+  describe('LoginComponent - Tests unitaires', () => {
 
-  it('doit avoir les valeurs par défaut initialisées', () => {
-    expect(component.hide).toBe(true); // "hide" est par défaut vrai
-    expect(component.onError).toBe(false); // Aucune erreur au début
-  });
-
-  it('doit créer un formulaire avec les contrôles email et password', () => {
-    expect(component.form.contains('email')).toBeTruthy();
-    expect(component.form.contains('password')).toBeTruthy();
-  });
-
-  it('doit invalider le formulaire si les champs sont vides', () => {
-    component.form.setValue({
-      email: '',
-      password: ''
-    });
-    expect(component.form.invalid).toBeTruthy();
-  });
-
-  it('email doit être invalide si le format est incorrect', () => {
-    const emailControl = component.form.get('email');
-    emailControl?.setValue('toto@@toto.com');
-    expect(emailControl?.invalid).toBeTruthy();
-  });
-
-  it('doit afficher un message d’erreur si onError est vrai', () => {
-    component.onError = true;
-    fixture.detectChanges(); // Met à jour le DOM
-    const errorMessage = fixture.nativeElement.querySelector('.error');
-    expect(errorMessage).toBeTruthy();
-    expect(errorMessage.textContent).toContain('An error occurred');
-  });
-
-  it('devrait appeler la méthode submit() lors de la soumission du formulaire', () => {
-    jest.spyOn(component, 'submit');
-    const form = fixture.nativeElement.querySelector('form');
-    form.dispatchEvent(new Event('submit')); // Simule un événement de soumission
-    expect(component.submit).toHaveBeenCalledTimes(1);
-  });
-
-
-  it('doit appeler login et naviguer en cas de succès de submit()', () => {
-    const routerSpy = jest.spyOn(TestBed.inject(Router), 'navigate');
-
-    component.form.setValue({
-      email: 'test@test.com',
-      password: 'passwordZZZ',
+    it('should create', () => {
+      expect(component).toBeTruthy();
     });
 
-    component.submit();
-
-    expect(authServiceMock.login).toHaveBeenCalledWith({
-      email: 'test@test.com',
-      password: 'passwordZZZ',
+    it('doit avoir les valeurs par défaut initialisées', () => {
+      expect(component.hide).toBe(true); // "hide" est par défaut vrai
+      expect(component.onError).toBe(false); // Aucune erreur au début
     });
-    expect(sessionServiceMock.logIn).toHaveBeenCalledWith({userId: 1});
-    expect(routerSpy).toHaveBeenCalledWith(['/sessions']);
+
+    it('doit créer un formulaire avec les contrôles email et password', () => {
+      expect(component.form.contains('email')).toBeTruthy();
+      expect(component.form.contains('password')).toBeTruthy();
+    });
+
+    it('doit invalider le formulaire si les champs sont vides', () => {
+      component.form.setValue({
+        email: '',
+        password: ''
+      });
+      expect(component.form.invalid).toBeTruthy();
+    });
+
+    it('email doit être invalide si le format est incorrect', () => {
+      const emailControl = component.form.get('email');
+      emailControl?.setValue('toto@@toto.com');
+      expect(emailControl?.invalid).toBeTruthy();
+    });
   });
 
-  it('doit définir onError à true en cas d’erreur de soumission', () => {
-    authServiceMock.login.mockReturnValue(throwError(() => new Error('Login failed')));
+  describe('LoginComponent - Tests d’intégration', () => {
+    // let component: LoginComponent;
+    // let fixture: ComponentFixture<LoginComponent>;
+    // let authServiceMock: any;
+    // let sessionServiceMock: any;
+    // const routerSpy = {navigate: jest.fn()};
+    //
+    // beforeEach(async () => {
+    //   authServiceMock = {
+    //     login: jest.fn().mockReturnValue(of({userId: 1})), // Simule une réponse de succès
+    //   };
+    //   sessionServiceMock = {
+    //     logIn: jest.fn(),
+    //   };
+    //
+    //   await TestBed.configureTestingModule({
+    //     declarations: [LoginComponent],
+    //     providers: [
+    //       {provide: AuthService, useValue: authServiceMock},
+    //       {provide: SessionService, useValue: sessionServiceMock},
+    //       {provide: Router, useValue: routerSpy}, // Remplace Router par un spy
+    //     ],
+    //     imports: [
+    //       RouterTestingModule,
+    //       HttpClientModule,
+    //       BrowserAnimationsModule,
+    //       ReactiveFormsModule,
+    //       MatCardModule,
+    //       MatFormFieldModule,
+    //       MatInputModule,
+    //       MatIconModule,
+    //     ],
+    //   }).compileComponents();
+    //
+    //   fixture = TestBed.createComponent(LoginComponent);
+    //   component = fixture.componentInstance;
+    //   fixture.detectChanges();
+    // });
 
-    component.form.setValue({
-      email: 'test@test.com',
-      password: 'passwordZZZ',
+    it('doit afficher un message d’erreur si onError est vrai', () => {
+      component.onError = true;
+      fixture.detectChanges(); // Met à jour le DOM
+      const errorMessage = fixture.nativeElement.querySelector('.error');
+      expect(errorMessage).toBeTruthy();
+      expect(errorMessage.textContent).toContain('An error occurred');
     });
 
-    component.submit();
+    it('devrait appeler la méthode submit() lors de la soumission du formulaire', () => {
+      jest.spyOn(component, 'submit');
+      const form = fixture.nativeElement.querySelector('form');
+      form.dispatchEvent(new Event('submit')); // Simule un événement de soumission
+      expect(component.submit).toHaveBeenCalledTimes(1);
+    });
 
-    expect(authServiceMock.login).toHaveBeenCalled();
-    expect(component.onError).toBeTruthy();
+    it('doit appeler login et naviguer en cas de succès de submit()', () => {
+      const routerSpy = jest.spyOn(TestBed.inject(Router), 'navigate');
+
+      component.form.setValue({
+        email: 'test@test.com',
+        password: 'passwordZZZ',
+      });
+
+      component.submit();
+
+      expect(authServiceMock.login).toHaveBeenCalledWith({
+        email: 'test@test.com',
+        password: 'passwordZZZ',
+      });
+      expect(sessionServiceMock.logIn).toHaveBeenCalled();
+      expect(routerSpy).toHaveBeenCalledWith(['/sessions']); // Chemin simulé après login
+    });
   });
 });

@@ -15,7 +15,7 @@ import { MatCardModule } from '@angular/material/card';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MeComponent } from './components/me/me.component';
 
-const materialModule = [
+export const materialModule = [
   MatButtonModule,
   MatCardModule,
   MatIconModule,
@@ -32,7 +32,7 @@ const materialModule = [
   imports: [
     BrowserModule,
     AppRoutingModule,
-    BrowserAnimationsModule, 
+    BrowserAnimationsModule,
     FlexLayoutModule,
     HttpClientModule,
     ...materialModule

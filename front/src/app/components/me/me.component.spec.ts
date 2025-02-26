@@ -1,11 +1,7 @@
 import {expect} from '@jest/globals';
 import {HttpClientModule} from '@angular/common/http';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
-// import {MatCardModule} from '@angular/material/card';
-// import {MatFormFieldModule} from '@angular/material/form-field';
-// import {MatIconModule} from '@angular/material/icon';
-// import {MatInputModule} from '@angular/material/input';
-import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
+import {MatSnackBar} from '@angular/material/snack-bar';
 import {SessionService} from 'src/app/services/session.service';
 
 import {MeComponent} from './me.component';
@@ -15,6 +11,7 @@ import {Observable, of} from "rxjs";
 import {User} from "../../interfaces/user.interface";
 // import {SessionInformation} from "../../interfaces/sessionInformation.interface";
 import {RouterTestingModule} from "@angular/router/testing";
+import {materialModule} from "../../app.module";
 
 describe('MeComponent', () => {
 
@@ -24,7 +21,7 @@ describe('MeComponent', () => {
     lastName: 'Nom',
     email: 'prenom.nom@test.com',
     admin: false,
-    password: 'tes!1234',
+    password: 'test!1234',
     createdAt: new Date('2025-02-25'),
   };
 
@@ -63,6 +60,9 @@ describe('MeComponent', () => {
 
       TestBed.configureTestingModule({
         declarations: [MeComponent],
+        imports: [
+          materialModule
+        ],
         providers: [
           {provide: SessionService, useValue: sessionServiceMock},
           {provide: UserService, useValue: userServiceMock},
@@ -132,8 +132,8 @@ describe('MeComponent', () => {
         declarations: [MeComponent],
         imports: [
           HttpClientModule,
-          MatSnackBarModule,
           RouterTestingModule,
+          materialModule
         ],
         providers: [
           {provide: UserService, useValue: userServiceMock},

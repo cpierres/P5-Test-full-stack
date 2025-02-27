@@ -112,22 +112,26 @@ describe('SessionApiService', () => {
   });
 
   it('devrait participer à une session', () => {
-    service.participate('1', 'user1').subscribe(() => {
+    const sessionId: string = '1';
+    const userId: string = '1';
+    service.participate(sessionId, userId).subscribe(() => {
       expect(true).toBeTruthy(); // Validation si le service répond sans erreur
     });
 
-    const req = httpMock.expectOne('api/session/1/participate/user1');
+    const req = httpMock.expectOne(`api/session/${sessionId}/participate/${userId}`);
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toBeNull();
     req.flush({});
   });
 
   it('devrait se désinscrire d\'une session', () => {
-    service.unParticipate('1', 'user1').subscribe(() => {
-      expect(true).toBeTruthy(); // Validation si le service répond sans erreur
+    const sessionId: string = '1';
+    const userId: string = '1';
+    service.unParticipate(sessionId, userId).subscribe(() => {
+      expect(true).toBeTruthy();
     });
 
-    const req = httpMock.expectOne('api/session/1/participate/user1');
+    const req = httpMock.expectOne(`api/session/${sessionId}/participate/${userId}`);
     expect(req.request.method).toBe('DELETE');
     req.flush({});
   });

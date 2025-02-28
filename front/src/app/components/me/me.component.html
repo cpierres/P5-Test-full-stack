@@ -10,12 +10,12 @@
     </mat-card-title>
     <mat-card-content>
       <div *ngIf="user" fxLayout="column" fxLayoutAlign="start center">
-        <p cy-data="user-name">Name: {{ user.firstName }} {{ user.lastName | uppercase }}</p>
-        <p cy-data="user-email">Email: {{ user.email }}</p>
+        <p data-test="user-name">Name: {{ user.firstName }} {{ user.lastName | uppercase }}</p>
+        <p data-test="user-email">Email: {{ user.email }}</p>
         <p *ngIf="user.admin" class="my2">You are admin</p>
         <div *ngIf="!user.admin" fxLayout="column" class="my2" fxLayoutAlign="center center">
           <p>Delete my account:</p>
-          <button mat-raised-button color="warn" (click)="delete()" cy-data="delete-action">
+          <button mat-raised-button color="warn" (click)="delete()" data-test="delete-action">
             <mat-icon>delete</mat-icon>
             <span class="ml1">Detail</span>
           </button>

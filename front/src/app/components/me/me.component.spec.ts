@@ -151,12 +151,12 @@ describe('MeComponent', () => {
       fixture.detectChanges(); // Lance le cycle de vie Angular
 
       const compiled = fixture.nativeElement;
-      expect(compiled.querySelector('[cy-data="user-name"]')?.textContent)
+      expect(compiled.querySelector('[data-test="user-name"]')?.textContent)
         .toContain('Name: ' + mockUserNonAdmin.firstName + ' ' + mockUserNonAdmin.lastName.toUpperCase());
-      expect(compiled.querySelector('[cy-data="user-email"]')?.textContent)
+      expect(compiled.querySelector('[data-test="user-email"]')?.textContent)
         .toContain('Email: ' + mockUserNonAdmin.email);
       expect(compiled.textContent).toContain('Delete my account:');
-      expect(compiled.querySelector('button[cy-data="delete-action"]')).toBeTruthy();
+      expect(compiled.querySelector('button[data-test="delete-action"]')).toBeTruthy();
     });
 
     it('devrait afficher les informations pour un utilisateur admin', () => {
@@ -165,12 +165,12 @@ describe('MeComponent', () => {
       fixture.detectChanges();
 
       const compiled = fixture.nativeElement;
-      expect(compiled.querySelector('[cy-data="user-name"]')?.textContent)
+      expect(compiled.querySelector('[data-test="user-name"]')?.textContent)
         .toContain('Name: ' + mockUserAdmin.firstName + ' ' + mockUserAdmin.lastName.toUpperCase());
-      expect(compiled.querySelector('[cy-data="user-email"]')?.textContent)
+      expect(compiled.querySelector('[data-test="user-email"]')?.textContent)
         .toContain('Email: ' + mockUserAdmin.email);
       expect(compiled.querySelector('p.my2').textContent).toContain('You are admin');
-      expect(compiled.querySelector('button[cy-data="delete-action"]')).toBeFalsy();
+      expect(compiled.querySelector('button[data-test="delete-action"]')).toBeFalsy();
     });
 
     // it('devrait permettre à un utilisateur non-admin de supprimer leur compte', async () => {
@@ -196,7 +196,7 @@ describe('MeComponent', () => {
     //   //   router.navigate(['/']);
     //   // });
     //
-    //   const deleteButton = fixture.nativeElement.querySelector('button[cy-data="delete-action"]');
+    //   const deleteButton = fixture.nativeElement.querySelector('button[data-test="delete-action"]');
     //   expect(deleteButton).toBeTruthy();
     //   deleteButton.click();
     //
@@ -217,8 +217,8 @@ describe('MeComponent', () => {
     //   const compiled = fixture.nativeElement;
     //
     //   // Vérification : éléments HTML Login et Register présents
-    //   const loginElt = compiled.querySelector('[cy-data="Login"]');
-    //   const registerElt = compiled.querySelector('[cy-data="Register"]');
+    //   const loginElt = compiled.querySelector('[data-test="Login"]');
+    //   const registerElt = compiled.querySelector('[data-test="Register"]');
     //
     //   expect(loginElt).toBeTruthy();
     //   expect(registerElt).toBeTruthy();

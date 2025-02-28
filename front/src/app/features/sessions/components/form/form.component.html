@@ -32,7 +32,7 @@
           <textarea matInput rows="8" formControlName="description"></textarea>
         </mat-form-field>
         <div fxLayout="row" fxLayoutAlign="center center">
-          <button mat-raised-button color="primary" type="submit" [disabled]="sessionForm.invalid">
+          <button mat-raised-button color="primary" type="submit" [disabled]="sessionForm.invalid" data-test="save-action">
             Save
           </button>
         </div>

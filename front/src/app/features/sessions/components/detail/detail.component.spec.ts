@@ -118,8 +118,8 @@ describe('DetailComponent', () => {
       //const hasDeleteButton = Array.from(buttons).some(button => button.textContent?.includes('Delete'));
       //expect(hasDeleteButton).toBe(true);
 
-      //ci-dessus ok mais j'ai ajouté data-cy="delete-action" pour trouver facilement le bouton
-      const deleteButton = compiled.querySelector('[data-cy="delete-action"]');
+      //ci-dessus ok mais j'ai ajouté data-test="delete-action" pour trouver facilement le bouton
+      const deleteButton = compiled.querySelector('[data-test="delete-action"]');
       expect(deleteButton).toBeTruthy();
 
     });
@@ -128,7 +128,7 @@ describe('DetailComponent', () => {
       const deleteSpy = jest.spyOn(component, 'delete');
       component.isAdmin = true;
       fixture.detectChanges();
-      const deleteButton = fixture.nativeElement.querySelector('[data-cy="delete-action"]');
+      const deleteButton = fixture.nativeElement.querySelector('[data-test="delete-action"]');
       deleteButton.click();
       expect(deleteSpy).toHaveBeenCalled();
     });
@@ -234,11 +234,11 @@ describe('DetailComponent', () => {
       fixture.detectChanges();
 
       // Vérification initiale du DOM (avant participation)
-      const attendeesElementBefore = fixture.nativeElement.querySelector('[data-cy="attendees-count"]');
+      const attendeesElementBefore = fixture.nativeElement.querySelector('[data-test="attendees-count"]');
       expect(attendeesElementBefore.textContent).toContain('1 attendees');
 
-      // Simuler un clic sur le bouton "Participer" recherché via `data-cy`
-      const participateButton = fixture.nativeElement.querySelector('[data-cy="participate-action"]');
+      // Simuler un clic sur le bouton "Participer" recherché via `data-test`
+      const participateButton = fixture.nativeElement.querySelector('[data-test="participate-action"]');
       participateButton.click();
 
       fixture.detectChanges();
@@ -247,7 +247,7 @@ describe('DetailComponent', () => {
       expect(participateSpy).toHaveBeenCalled();
 
       // Vérification du DOM après participation
-      const attendeesElementAfter = fixture.nativeElement.querySelector('[data-cy="attendees-count"]');
+      const attendeesElementAfter = fixture.nativeElement.querySelector('[data-test="attendees-count"]');
       expect(attendeesElementAfter.textContent).toContain('2 attendees'); // Le comptage des attendees doit être mis à jour
     });
 

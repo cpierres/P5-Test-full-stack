@@ -2,13 +2,35 @@
 declare namespace Cypress {
   interface Chainable<Subject = any> {
     login(email: string, password: string): void
+    loginAs(role: string): void
   }
 }
+
+/**
+ * Permet de se connecter avec un email (code user) et un password.
+ */
 Cypress.Commands.add('login', (email:string, password:string) => {
   cy.visit('/login');
   cy.get('input[formControlName=email]').type(email);
   cy.get('input[formControlName=password]').type(`${password}{enter}{enter}`);
 });
+
+/**
+ * Permet de se connecter avec un user dont le rôle est 'admin' ou bien 'client'.
+ * Tout autre valeur sera considérée comme un user non autorisé.
+ */
+Cypress.Commands.add('loginAs', (role: string = 'unknown') => {
+  const roles = {
+    admin: { email: 'yoga@studio.com', password: 'test!1234' },
+    client: { email: 'user@test.com', password: 'test!1234' },
+    unknown: { email: 'inconnu@test.com', password: 'inconnu' }, // Défaut si rôle non connu
+  };
+
+  const credentials = roles[role] || roles['unknown']; // Si le rôle n'existe pas, on utilise le rôle "unknown"
+
+  cy.login(credentials.email, credentials.password);
+});
+
 
 // ***********************************************
 // This example namespace declaration will help

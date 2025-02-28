@@ -1,5 +1,6 @@
 /// <reference types="cypress" />
 import {Session} from "../../src/app/features/sessions/interfaces/session.interface";
+import {Teacher} from "../../src/app/interfaces/teacher.interface";
 
 describe('Gestion des sessions de yoga - E2E', () => {
   let updatedSessions: Session[] = [];
@@ -44,21 +45,19 @@ describe('Gestion des sessions de yoga - E2E', () => {
         }).as('adminLogin');
 
         cy.intercept('GET', '/api/session', (req) => {
-          req.headers.Authorization = 'Bearer fake-jwt-token';
+          //req.headers.Authorization = 'Bearer fake-jwt-token';
           // cy.get('@sessionsJSON').then((sessions) => {
           //   updatedSessions = [...sessions];
           // });
           //req.reply('@sessionsJSON');
-          req.reply(updatedSessions);
+          req.reply(
+            updatedSessions
+          );
         }).as('getSessions');
 
       }//if (!Cypress.env('useRealBackend')) {
 
-      // cy.visit('/login');
-      // cy.get('input[formControlName=email]').type('yoga@studio.com');
-      // cy.get('input[formControlName=password]').type(`${'test!1234'}{enter}{enter}`);
-      // cy.url().should('include', '/sessions');
-      cy.login('yoga@studio.com','test!1234');
+      cy.loginAs('admin');
 
     });
 
@@ -83,8 +82,14 @@ describe('Gestion des sessions de yoga - E2E', () => {
         }).as('getPostSession');
 
         cy.intercept('GET', '/api/session', (req) => {
-          req.headers.Authorization = 'Bearer fake-jwt-token';
-          req.reply({statusCode: 200, body: updatedSessions});
+          req.reply({
+            statusCode: 200,
+            headers: {
+              Authorization: 'Bearer fake-jwt-token',
+              'Content-Type': 'application/json'
+            },
+            body: updatedSessions
+          });
         }).as('getSessionsUpdated');
       }//if (!Cypress.env('useRealBackend')) {
 
@@ -134,6 +139,7 @@ describe('Gestion des sessions de yoga - E2E', () => {
       cy.get('mat-option').contains('Margot DELAHAYE').click();
       //cy.get('mat-option').eq(1).click();//pour sélectionner 2eme option
 
+
       cy.get('textarea[formControlName=description]').type('Session yoga après-midi');
       cy.get('[data-test="save-action"]').click();
       //cy.wait('@getPostSession');
@@ -179,19 +185,33 @@ describe('Gestion des sessions de yoga - E2E', () => {
         cy.intercept('GET', '/api/teacher', {fixture: 'teacher.json'}).as('getTeachers');
 
         cy.intercept('PUT', '/api/session/2', (req) => {
-          req.headers.Authorization = 'Bearer fake-jwt-token';
-
           const sessionIndex = updatedSessions.findIndex(s => s.id === 2);
           if (sessionIndex !== -1) {
             updatedSessions[sessionIndex] = {...updatedSessions[sessionIndex], ...req.body};
           }
 
-          req.reply({statusCode: 200, body: req.body});
+          req.reply(
+            {
+              statusCode: 200,
+              headers: {
+                Authorization: 'Bearer fake-jwt-token',
+                'Content-Type': 'application/json'
+              },
+              body: req.body
+            }
+          );
         });
         cy.intercept('GET', '/api/session/2', (req) => {
-          req.headers.Authorization = 'Bearer fake-jwt-token';
           const session: Session | undefined = updatedSessions.find(s => s.id === 2);
-          req.reply({statusCode: 200, body: session ? session : {"message": "Session not found"}});
+          req.reply(
+            {
+              statusCode: 200,
+              headers: {
+                Authorization: 'Bearer fake-jwt-token',
+                'Content-Type': 'application/json'
+              },
+              body: session ? session : {"message": "Session not found"}
+            });
         });
       }//if (!Cypress.env('useRealBackend')) {
 
@@ -208,15 +228,27 @@ describe('Gestion des sessions de yoga - E2E', () => {
     it('Supprimer la 3ème session', () => {
       if (!Cypress.env('useRealBackend')) {
         cy.intercept('GET', '/api/session/3', (req) => {
-          req.headers.Authorization = 'Bearer fake-jwt-token';
           const session: Session | undefined = updatedSessions.find(s => s.id === req.body.id);
-          req.reply({statusCode: 200, body: session ? session : {"message": "Session not found"}});
+          req.reply(
+            {
+              statusCode: 200,
+              headers: {
+                Authorization: 'Bearer fake-jwt-token',
+                'Content-Type': 'application/json'
+              },
+              body: session ? session : {"message": "Session not found"}
+            });
         });
 
         cy.intercept('DELETE', '/api/session/3', (req) => {
-          req.headers.Authorization = 'Bearer fake-jwt-token';
           updatedSessions = updatedSessions.filter(session => session.id !== 3);
-          req.reply({statusCode: 200});
+          req.reply({
+            statusCode: 200,
+            headers: {
+              Authorization: 'Bearer fake-jwt-token',
+              'Content-Type': 'application/json'
+            },
+          });
         }).as('deleteSession');
       }//if (!Cypress.env('useRealBackend')) {
 
@@ -262,7 +294,7 @@ describe('Gestion des sessions de yoga - E2E', () => {
   context('Actions pour le profil non-administrateur', () => {
     beforeEach(() => {
       if (!Cypress.env('useRealBackend')) {
-        // Login utilisateur standard
+        // Login utilisateur client
         cy.intercept('POST', '/api/auth/login', {
           body: {
             id: 2,
@@ -274,23 +306,23 @@ describe('Gestion des sessions de yoga - E2E', () => {
         }).as('userLogin');
 
         cy.intercept('GET', '/api/session', (req) => {
-          req.headers.Authorization = 'Bearer fake-jwt-token';
+          //req.headers.Authorization = 'Bearer fake-jwt-token';
           req.reply({statusCode: 200, body: updatedSessions});
         }).as('getSessionsUpdated');
-      }
 
-      cy.visit('/login');
-      cy.get('input[formControlName=email]').type('user@test.com');
-      cy.get('input[formControlName=password]').type(`${'test!1234'}{enter}{enter}`);
-      cy.url().should('include', '/sessions');
-    });
-
-    it('S\'inscrire à la session 1 et vérifier les changements', () => {
-      if (!Cypress.env('useRealBackend')) {
+        // ****************
         cy.intercept('GET', '/api/session/1', (req) => {
-          req.headers.Authorization = 'Bearer fake-jwt-token';
           const session: Session | undefined = updatedSessions.find(s => s.id === 1);
-          req.reply({statusCode: 200, body: session ? session : {"message": "Session not found"}});
+          req.reply(
+            {
+              statusCode: 200,
+              headers: {
+                Authorization: 'Bearer fake-jwt-token',
+                'Content-Type': 'application/json'
+              },
+              body: session ? session : {"message": "Session not found"}
+            }
+          );
         }).as('session1');
 
         cy.intercept('GET', '/api/teacher', {fixture: 'teacher.json'}).as('getTeachers');
@@ -298,25 +330,84 @@ describe('Gestion des sessions de yoga - E2E', () => {
         cy.intercept('GET', '/api/teacher/1', (req) => {
           req.reply({
             statusCode: 200,
+            headers: {
+              Authorization: 'Bearer fake-jwt-token',
+              'Content-Type': 'application/json'
+            },
             body: {
               id: 1,
-              ...require('../fixtures/teacher.json').find((teacher: any) => teacher.id === 1)
+              ...require('../fixtures/teacher.json').find((teacher: Teacher) => teacher.id === 1)
             }
           });
         }).as('getTeacherById');
 
         cy.intercept('POST', '/api/session/1/participate/2', (req) => {
-          req.headers.Authorization = 'Bearer fake-jwt-token';
+          const sessionAddUser: Session = {
+            id: 1,
+            name: 'Session 1 matin',
+            date: new Date('2025-02-19'),
+            description: 'Session yoga du matin',
+            teacher_id: 1,
+            users: [2],
+            createdAt: new Date('2025-02-19T12:00:00.000Z'),
+            updatedAt: new Date('2025-02-19T12:00:00.000Z')
+          };
+          console.log(
+            'Request body received by the server:',
+            sessionAddUser)
+
+          //mettre à jour la session dans la variable globale updatedSessions
+          const sessionIndex = updatedSessions.findIndex(s => s.id === 1);
+          if (sessionIndex !== -1) {
+            updatedSessions[sessionIndex] = {...updatedSessions[sessionIndex], ...sessionAddUser};
+          }
+
           req.reply({
             statusCode: 200,
-            body: {
-              ...req.body,
-              users: [
-                {id: 2, firstName: 'Prenom', lastName: 'Nom'}
-              ]
-            }
+            headers: {
+              Authorization: 'Bearer fake-jwt-token',
+              'Content-Type': 'application/json'
+            },
+            body:sessionAddUser
           });
         }).as('participate');
+
+        cy.intercept('DELETE', '/api/session/1/participate/2', (req) => {
+          const sessionRemoveUser: Session =
+            {
+              id: 1,
+              name: 'Session 1 matin',
+              date: new Date('2025-02-19'),
+              description: 'Session yoga du matin',
+              teacher_id: 1,
+              users: [],//retrait de l'utilisateur
+              createdAt: new Date('2025-02-19'),
+              updatedAt: new Date('2025-02-19')
+            };
+
+          //mettre à jour la session dans la variable globale updatedSessions
+          const sessionIndex = updatedSessions.findIndex(s => s.id === 1);
+          if (sessionIndex !== -1) {
+            updatedSessions[sessionIndex] = {...updatedSessions[sessionIndex], ...sessionRemoveUser};
+          }
+          req.reply({
+            statusCode: 200,
+            headers: {
+              Authorization: 'Bearer fake-jwt-token',
+              'Content-Type': 'application/json'
+            },
+            body:sessionRemoveUser
+          });
+        }).as('unparticipate');
+      }//if (!Cypress.env('useRealBackend')) {
+
+      cy.loginAs('client');
+
+      cy.url().should('include', '/sessions');
+    });
+
+    it('S\'inscrire à la session 1 et vérifier les changements', () => {
+      if (!Cypress.env('useRealBackend')) {
       }
 
       cy.get(':nth-child(1) > .mat-card-actions > [data-test="detail-action"]').click();
@@ -334,7 +425,6 @@ describe('Gestion des sessions de yoga - E2E', () => {
     });
 
     it('Se désinscrire de la session 1 et vérifier le compteur', () => {
-      cy.intercept('DELETE', '/api/session/1/participate/user2', {statusCode: 200}).as('unparticipate');
 
       cy.get(':nth-child(1) > .mat-card-actions > [data-test="detail-action"]').click();
       cy.url().should('include', '/sessions/detail/1');

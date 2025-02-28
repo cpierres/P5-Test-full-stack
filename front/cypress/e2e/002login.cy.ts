@@ -23,7 +23,8 @@ describe('Login spec', () => {
     // cy.visit('/login')
     // cy.get('input[formControlName=email]').type("yoga@studio.com")
     // cy.get('input[formControlName=password]').type(`${"test!1234"}{enter}{enter}`)
-    cy.login('yoga@studio.com','test!1234');
+    //cy.login('yoga@studio.com','test!1234');
+    cy.loginAs('admin');
 
     cy.url().should('include', '/sessions')
   });
@@ -51,7 +52,9 @@ describe('Login spec', () => {
     // cy.visit('/login')
     // cy.get('input[formControlName=email]').type("user@test.com")
     // cy.get('input[formControlName=password]').type(`${"test!1234"}{enter}{enter}`)
-    cy.login('user@test.com','test!1234');
+
+    //cy.login('user@test.com','test!1234');//v1
+    cy.loginAs('client');//v2
 
     cy.url().should('include', '/sessions')
   })
@@ -67,7 +70,8 @@ describe('Login spec', () => {
     // cy.get('input[formControlName=email]').type("inconnu@test.com")
     // cy.get('input[formControlName=password]').type(`${"zzzz"}{enter}{enter}`)
 
-    cy.login('inconnu@test.com','123!zzzz');
+    //cy.login('inconnu@test.com','123!zzzz');
+    cy.loginAs('inconnu');
 
     cy.get('.error');
   })

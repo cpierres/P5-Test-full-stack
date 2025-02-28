@@ -1,3 +1,15 @@
+/// <reference types="cypress" />
+declare namespace Cypress {
+  interface Chainable<Subject = any> {
+    login(email: string, password: string): void
+  }
+}
+Cypress.Commands.add('login', (email:string, password:string) => {
+  cy.visit('/login');
+  cy.get('input[formControlName=email]').type(email);
+  cy.get('input[formControlName=password]').type(`${password}{enter}{enter}`);
+});
+
 // ***********************************************
 // This example namespace declaration will help
 // with Intellisense and code completion in your

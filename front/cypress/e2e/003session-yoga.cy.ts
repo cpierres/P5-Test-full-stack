@@ -7,7 +7,10 @@ describe('Gestion des sessions de yoga - E2E', () => {
 
   beforeEach(() => {
     if (!Cypress.env('useRealBackend')) {
-      cy.fixture('teacher.json').as('teachersJSON');
+      cy.fixture('teacher.json').then((teachers) => {
+        cy.intercept('GET', '/api/teacher', teachers).as('getTeachers');
+      });
+
       //cy.fixture('user.json').as('usersJSON');
       //cy.fixture('session.json').as('sessionsJSON');
     }

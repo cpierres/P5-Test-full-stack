@@ -228,4 +228,29 @@ class SessionServiceTest {
         assertTrue(result.isEmpty());
         verify(sessionRepository, times(1)).findAll();
     }
+    @Test
+    void getById_ShouldReturnSession_WhenValidIdIsProvided() {
+        Long sessionId = 1L;
+        Session session = new Session().setId(sessionId).setName("Test Session");
+
+        when(sessionRepository.findById(sessionId)).thenReturn(Optional.of(session));
+
+        Session result = sessionService.getById(sessionId);
+
+        assertNotNull(result);
+        assertEquals("Test Session", result.getName());
+        verify(sessionRepository, times(1)).findById(sessionId);
+    }
+
+    @Test
+    void getById_ShouldReturnNull_WhenSessionDoesNotExist() {
+        Long sessionId = 1L;
+
+        when(sessionRepository.findById(sessionId)).thenReturn(Optional.empty());
+
+        Session result = sessionService.getById(sessionId);
+
+        assertNull(result);
+        verify(sessionRepository, times(1)).findById(sessionId);
+    }
 }

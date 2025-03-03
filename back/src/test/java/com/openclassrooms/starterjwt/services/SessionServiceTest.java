@@ -13,6 +13,7 @@ import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -201,5 +202,30 @@ class SessionServiceTest {
         // teste que l'appel à sessionService.delete(..) est bien capable de lancer une exception de type
         // NotFoundException
         assertThrows(NotFoundException.class, () -> sessionService.delete(sessionId));
+    }
+
+    @Test
+    void findAll_ShouldReturnAllSessions_WhenRepositoryContainsSessions() {
+        List<Session> sessions = List.of(new Session().setId(1L).setName("Session 1"),
+                new Session().setId(2L).setName("Session 2"));
+
+        when(sessionRepository.findAll()).thenReturn(sessions);
+
+        List<Session> result = sessionService.findAll();
+
+        assertEquals(2, result.size());
+        assertEquals("Session 1", result.get(0).getName());
+        assertEquals("Session 2", result.get(1).getName());
+        verify(sessionRepository, times(1)).findAll();
+    }
+
+    @Test
+    void findAll_ShouldReturnEmptyList_WhenNoSessionsExist() {
+        when(sessionRepository.findAll()).thenReturn(List.of());
+
+        List<Session> result = sessionService.findAll();
+
+        assertTrue(result.isEmpty());
+        verify(sessionRepository, times(1)).findAll();
     }
 }

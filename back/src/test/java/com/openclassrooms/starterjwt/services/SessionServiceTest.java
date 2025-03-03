@@ -6,6 +6,8 @@ import com.openclassrooms.starterjwt.models.Session;
 import com.openclassrooms.starterjwt.models.User;
 import com.openclassrooms.starterjwt.repository.SessionRepository;
 import com.openclassrooms.starterjwt.repository.UserRepository;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,13 +20,25 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class SessionServiceTest {
+    private SessionService sessionService;
+    private SessionRepository sessionRepository; // mocké
+    private UserRepository userRepository; // mocké
+
+    @BeforeEach
+    void setUp() {
+        sessionRepository = Mockito.mock(SessionRepository.class);
+        userRepository = Mockito.mock(UserRepository.class);
+
+        sessionService = new SessionService(sessionRepository, userRepository);
+    }
+
+    @AfterEach
+    void tearDown() {
+        Mockito.reset(sessionRepository, userRepository);
+    }
 
     @Test
     void participate_ShouldAddUserToSession_WhenValidIdsAreProvided() {
-        SessionRepository sessionRepository = mock(SessionRepository.class);
-        UserRepository userRepository = mock(UserRepository.class);
-        SessionService sessionService = new SessionService(sessionRepository, userRepository);
-
         Long sessionId = 1L;
         Long userId = 2L;
 
@@ -51,10 +65,6 @@ class SessionServiceTest {
 
     @Test
     void participate_ShouldThrowNotFoundException_WhenSessionDoesNotExist() {
-        SessionRepository sessionRepository = mock(SessionRepository.class);
-        UserRepository userRepository = mock(UserRepository.class);
-        SessionService sessionService = new SessionService(sessionRepository, userRepository);
-
         Long sessionId = 1L;
         Long userId = 2L;
 
@@ -65,10 +75,6 @@ class SessionServiceTest {
 
     @Test
     void participate_ShouldThrowNotFoundException_WhenUserDoesNotExist() {
-        SessionRepository sessionRepository = mock(SessionRepository.class);
-        UserRepository userRepository = mock(UserRepository.class);
-        SessionService sessionService = new SessionService(sessionRepository, userRepository);
-
         Long sessionId = 1L;
         Long userId = 2L;
 
@@ -84,10 +90,6 @@ class SessionServiceTest {
 
     @Test
     void participate_ShouldThrowBadRequestException_WhenUserAlreadyParticipates() {
-        SessionRepository sessionRepository = mock(SessionRepository.class);
-        UserRepository userRepository = mock(UserRepository.class);
-        SessionService sessionService = new SessionService(sessionRepository, userRepository);
-
         Long sessionId = 1L;
         Long userId = 2L;
 
@@ -107,10 +109,6 @@ class SessionServiceTest {
 
     @Test
     void noLongerParticipate_ShouldRemoveUserFromSession_WhenValidIdsAreProvided() {
-        SessionRepository sessionRepository = mock(SessionRepository.class);
-        UserRepository userRepository = mock(UserRepository.class);
-        SessionService sessionService = new SessionService(sessionRepository, userRepository);
-
         Long sessionId = 1L;
         Long userId = 2L;
 
@@ -133,10 +131,6 @@ class SessionServiceTest {
 
     @Test
     void noLongerParticipate_ShouldThrowNotFoundException_WhenSessionDoesNotExist() {
-        SessionRepository sessionRepository = mock(SessionRepository.class);
-        UserRepository userRepository = mock(UserRepository.class);
-        SessionService sessionService = new SessionService(sessionRepository, userRepository);
-
         Long sessionId = 1L;
         Long userId = 2L;
 
@@ -147,10 +141,6 @@ class SessionServiceTest {
 
     @Test
     void noLongerParticipate_ShouldThrowBadRequestException_WhenUserDoesNotParticipate() {
-        SessionRepository sessionRepository = mock(SessionRepository.class);
-        UserRepository userRepository = mock(UserRepository.class);
-        SessionService sessionService = new SessionService(sessionRepository, userRepository);
-
         Long sessionId = 1L;
         Long userId = 2L;
 
@@ -167,10 +157,6 @@ class SessionServiceTest {
     }
     @Test
     void create_ShouldSaveSession_WhenValidSessionProvided() {
-        SessionRepository sessionRepository = mock(SessionRepository.class);
-        UserRepository userRepository = mock(UserRepository.class);
-        SessionService sessionService = new SessionService(sessionRepository, userRepository);
-
         Session session = new Session();
         session.setName("Cours Yoga matin");
 
@@ -185,11 +171,9 @@ class SessionServiceTest {
 
     @Test
     void create_ShouldThrowException_WhenSessionIsNull() {
-        SessionRepository sessionRepository = mock(SessionRepository.class);
-        UserRepository userRepository = mock(UserRepository.class);
-        SessionService sessionService = new SessionService(sessionRepository, userRepository);
         //curieux car j'ai dû retourner explicitement un IllegalArgumentException dans sessionService.create
         //alors que théoriquement create aurait dû savoir le faire seul.
         assertThrows(IllegalArgumentException.class, () -> sessionService.create(null));
     }
+
 }

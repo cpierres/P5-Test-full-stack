@@ -253,4 +253,26 @@ class SessionServiceTest {
         assertNull(result);
         verify(sessionRepository, times(1)).findById(sessionId);
     }
+    @Test
+    void update_ShouldUpdateAndReturnSession_WhenValidIdAndSessionAreProvided() {
+        Long sessionId = 1L;
+
+        Session session = new Session()
+                .setName("Session à mettre à jour")
+                .setDescription("description à mettre à jour");
+
+        Session updatedSession = new Session()
+                .setId(sessionId)
+                .setName("Session mise à jour")
+                .setDescription("description mise à jour");
+
+        when(sessionRepository.save(any(Session.class))).thenReturn(updatedSession);
+
+        Session result = sessionService.update(sessionId, session);
+
+        verify(sessionRepository, times(1)).save(session);
+        assertNotNull(result);
+        assertEquals("Session mise à jour", result.getName());
+        assertEquals("description mise à jour", result.getDescription());
+    }
 }

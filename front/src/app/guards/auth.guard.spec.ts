@@ -11,7 +11,7 @@ describe('AuthGuard', () => {
   beforeEach(() => {
     const sessionServiceMock = {};
     Object.defineProperty(sessionServiceMock, 'isLogged', {
-      get: jest.fn(), // Define as a mockable getter
+      get: jest.fn(),
     });
 
     TestBed.configureTestingModule({

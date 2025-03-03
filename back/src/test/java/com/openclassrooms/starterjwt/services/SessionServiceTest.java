@@ -176,4 +176,30 @@ class SessionServiceTest {
         assertThrows(IllegalArgumentException.class, () -> sessionService.create(null));
     }
 
+    @Test
+    void delete_ShouldDeleteSession_WhenValidIdProvided() {
+        Long sessionId = 1L;
+
+        //ne fait rien (pas de suppression) ...
+        doNothing().when(sessionRepository).deleteById(sessionId);
+
+        sessionService.delete(sessionId);
+
+        // ... sauf vérifié que cette méthode a bien été invoquée une fois
+        verify(sessionRepository, times(1)).deleteById(sessionId);
+    }
+
+    @Test
+    void delete_ShouldThrowNotFoundException_WhenSessionDoesNotExist() {
+        //id censé ne pas exister
+        Long sessionId = 1L;
+
+        // configure le mock sessionRepository pour lancer NotFoundException lorsqu'on appelle
+        // sa méthode deleteById avec l'ID spécifié
+        doThrow(new NotFoundException()).when(sessionRepository).deleteById(sessionId);
+
+        // teste que l'appel à sessionService.delete(..) est bien capable de lancer une exception de type
+        // NotFoundException
+        assertThrows(NotFoundException.class, () -> sessionService.delete(sessionId));
+    }
 }

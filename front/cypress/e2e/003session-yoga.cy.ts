@@ -38,8 +38,8 @@ describe('Gestion des sessions de yoga - E2E', () => {
             type: 'Bearer',
             id: 1,
             username: 'yoga@studio.com',
-            firstName: 'AdminPrenom',
-            lastName: 'AdminNom',
+            firstName: 'Admin',
+            lastName: 'Admin',
             admin: true
           },
         }).as('adminLogin');
@@ -58,12 +58,11 @@ describe('Gestion des sessions de yoga - E2E', () => {
       }//if (!Cypress.env('useRealBackend')) {
 
       cy.loginAs('admin');
-
+      cy.url().should('include', '/sessions');
     });
 
     it('Créer 3 sessions de yoga', () => {
       if (!Cypress.env('useRealBackend')) {
-        cy.intercept('GET', '/api/teacher', {fixture: 'teacher.json'}).as('getTeachers');
 
         let currentIdSession = 1;
         cy.intercept('POST', '/api/session', (req) => {
@@ -97,9 +96,7 @@ describe('Gestion des sessions de yoga - E2E', () => {
 
       // Création de la première session
       cy.get('[data-test="create-action"]').click();//clic sur bouton Create
-      if (!Cypress.env('useRealBackend')) {
-        cy.wait('@getTeachers');
-      }
+
       cy.get('input[formControlName=name]').type('Session 1 matin');
       cy.get('input[formControlName=date]').type('2025-02-19');
       //cy.get('mat-select[formControlName=teacher_id]').click().contains('Margot DELAHAYE').click();
@@ -114,7 +111,7 @@ describe('Gestion des sessions de yoga - E2E', () => {
       //cy.wait('@getSessionsUpdated');//pour voir la liste
       cy.url().should('include', '/sessions');
 
-      cy.wait(1000);
+      cy.wait(500);
 
       // Création de la 2eme session
       cy.get('[data-test="create-action"]').click();//clic sur bouton Create
@@ -144,7 +141,9 @@ describe('Gestion des sessions de yoga - E2E', () => {
       cy.get('[data-test="save-action"]').click();
       //cy.wait('@getPostSession');
       //cy.wait('@getSessionsUpdated');//pour voir la liste
-      cy.url().should('include', '/sessions');
+      //cy.url().should('include', '/sessions');
+      cy.url().should('match', /\/sessions$/);//doit se terminer par /sessions
+
       if (!Cypress.env('useRealBackend')) {
         cy.wait('@getSessionsUpdated');
       }
@@ -285,6 +284,68 @@ describe('Gestion des sessions de yoga - E2E', () => {
 
     });
 
+    it('Tenter de saisir une Session avec une description de plus de 2000 car', () => {
+      if (!Cypress.env('useRealBackend')) {
+        cy.intercept('POST', '/api/session', {
+          statusCode: 500,
+        }).as('postRequest');
+      }
+      else {
+        //request réelle
+        cy.intercept('POST', '/api/session').as('postRequest');
+      }
+
+      cy.get('[data-test="create-action"]').click();//clic sur bouton Create
+
+      cy.get('input[formControlName=name]').type('Session avec description de plus de 2000 car.');
+      cy.get('input[formControlName=date]').type('2025-02-19');
+
+      cy.get('mat-select[formControlName=teacher_id]').click();
+      cy.get('mat-option').contains('Margot DELAHAYE').click();
+      //cy.get('mat-option').eq(1).click();//pour sélectionner 2eme option
+
+      let texte: string =
+        `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus ac libero in ex dapibus posuere.
+        Duis laoreet id dolor sed malesuada. Donec eget orci rutrum, lobortis turpis nec, bibendum dui. Curabitur
+        vulputate purus lectus, condimentum eleifend massa malesuada et. Aenean accumsan vitae purus non tempor.
+        Proin sed libero tortor. Pellentesque bibendum, orci vitae feugiat consectetur, odio nibh posuere magna, sed
+        blandit ligula dolor at mauris. Morbi et semper tellus. Class aptent taciti sociosqu ad litora torquent per
+        conubia nostra, per inceptos himenaeos. Nam dui mauris, blandit quis felis in, bibendum semper velit.
+        Sed eget eros nec lorem tristique venenatis. Sed mollis sapien sed quam porttitor cursus.
+        Proin facilisis aliquam sagittis. Nunc at sapien congue, pretium enim vel, venenatis dui.
+        Nam et blandit metus. Fusce feugiat condimentum mauris, sed lobortis ante luctus eget.
+        Sed fringilla, ligula et posuere imperdiet, leo ligula facilisis felis, non consequat eros felis auctor est.
+        Nulla vehicula mi eget porta ullamcorper. Vestibulum suscipit venenatis leo nec ultricies.
+        Aliquam dictum lacus id ex rhoncus egestas in ut erat. Etiam et efficitur nibh. Nulla tincidunt mi vel
+        gravida blandit. Donec non diam nibh. Cras nec mollis eros, in pellentesque lacus. Aliquam et arcu nec risus
+        suscipit mollis.
+        Quisque imperdiet quam eu nibh mollis, et cursus lacus sagittis. Quisque id mi quis justo mollis pellentesque
+        ut quis enim. Proin nibh ante, consequat vel lectus rutrum, condimentum laoreet ipsum. Nunc eleifend, massa
+        eget feugiat hendrerit, elit erat imperdiet justo, in semper dui eros vel tortor. Ut vestibulum turpis dolor,
+        id rutrum elit convallis quis. Ut vestibulum turpis dolor, id rutrum elit convallis quis.
+         Nunc eleifend, massa
+        eget feugiat hendrerit, elit erat imperdiet justo, in semper dui eros vel tortor. Ut vestibulum turpis dolor,
+        id rutrum elit convallis quis. Ut vestibulum turpis dolor, id rutrum elit convallis quis.`;
+
+      cy.log('Longueur description: ' + texte.length);
+
+      cy.get('textarea[formControlName=description]').type(texte,{delay: 0});
+
+      cy.get('[data-test="save-action"]').click();
+      //cy.wait('@getPostSession');
+      //cy.wait('@getSessionsUpdated');//pour voir la liste
+
+      cy.wait('@postRequest').then((interception) => {
+        expect(interception.response!.statusCode).to.eq(500); // Vérifie le code d'erreur
+        //expect(interception.response!.body.error).to.eq('Bad Request'); // Vérifie le message d'erreur (si spécifié)
+      });
+
+      cy.url().should('include', '/sessions/create');//on ne bouge pas car save échoue
+
+      cy.get('[data-test="back-action"]').click();
+
+    });
+
     it('Logout', () => {
       cy.get('[data-test="Logout"]').click();
     });
@@ -368,7 +429,7 @@ describe('Gestion des sessions de yoga - E2E', () => {
               Authorization: 'Bearer fake-jwt-token',
               'Content-Type': 'application/json'
             },
-            body:sessionAddUser
+            body: sessionAddUser
           });
         }).as('participate');
 
@@ -396,7 +457,7 @@ describe('Gestion des sessions de yoga - E2E', () => {
               Authorization: 'Bearer fake-jwt-token',
               'Content-Type': 'application/json'
             },
-            body:sessionRemoveUser
+            body: sessionRemoveUser
           });
         }).as('unparticipate');
       }//if (!Cypress.env('useRealBackend')) {

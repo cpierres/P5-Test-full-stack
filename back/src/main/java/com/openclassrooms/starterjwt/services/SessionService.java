@@ -23,6 +23,9 @@ public class SessionService {
     }
 
     public Session create(Session session) {
+        if (session == null) {
+            throw new IllegalArgumentException("La Session ne peut pas être nulle");
+        }
         return this.sessionRepository.save(session);
     }
 

@@ -165,4 +165,31 @@ class SessionServiceTest {
 
         assertThrows(BadRequestException.class, () -> sessionService.noLongerParticipate(sessionId, userId));
     }
+    @Test
+    void create_ShouldSaveSession_WhenValidSessionProvided() {
+        SessionRepository sessionRepository = mock(SessionRepository.class);
+        UserRepository userRepository = mock(UserRepository.class);
+        SessionService sessionService = new SessionService(sessionRepository, userRepository);
+
+        Session session = new Session();
+        session.setName("Cours Yoga matin");
+
+        when(sessionRepository.save(any(Session.class))).thenReturn(session);
+
+        Session savedSession = sessionService.create(session);
+
+        verify(sessionRepository, times(1)).save(session);
+        assertNotNull(savedSession);
+        assertEquals("Cours Yoga matin", savedSession.getName());
+    }
+
+    @Test
+    void create_ShouldThrowException_WhenSessionIsNull() {
+        SessionRepository sessionRepository = mock(SessionRepository.class);
+        UserRepository userRepository = mock(UserRepository.class);
+        SessionService sessionService = new SessionService(sessionRepository, userRepository);
+        //curieux car j'ai dû retourner explicitement un IllegalArgumentException dans sessionService.create
+        //alors que théoriquement create aurait dû savoir le faire seul.
+        assertThrows(IllegalArgumentException.class, () -> sessionService.create(null));
+    }
 }

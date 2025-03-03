@@ -89,7 +89,7 @@ describe('Login spec', () => {
     //cy.login('user@test.com','test!1234');//v1
     cy.loginAs('client');
     cy.url().should('include', '/sessions');
-    cy.wait(1000);
+    //cy.wait(1000);
   })
 
   it('Login user2@test.com, affichage de Account (me), Suppression du compte', () => {

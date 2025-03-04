@@ -2,7 +2,9 @@ package com.openclassrooms.starterjwt.controllers;
 
 import com.openclassrooms.starterjwt.models.User;
 import com.openclassrooms.starterjwt.payload.request.LoginRequest;
+import com.openclassrooms.starterjwt.payload.request.SignupRequest;
 import com.openclassrooms.starterjwt.payload.response.JwtResponse;
+import com.openclassrooms.starterjwt.payload.response.MessageResponse;
 import com.openclassrooms.starterjwt.repository.UserRepository;
 import com.openclassrooms.starterjwt.security.jwt.JwtUtils;
 import com.openclassrooms.starterjwt.security.services.UserDetailsImpl;
@@ -15,6 +17,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
@@ -39,6 +42,9 @@ class AuthControllerTest {
 
     @InjectMocks
     private AuthController authController;
+
+    @Mock
+    private PasswordEncoder passwordEncoder;
 
     private AutoCloseable closeable;
 
@@ -82,4 +88,43 @@ class AuthControllerTest {
         assertTrue(jwtResponse.getAdmin());
     }
 
+    @Test
+    void registerUser_Success() {
+        SignupRequest signupRequest = new SignupRequest();
+        signupRequest.setEmail("user@test.com");
+        signupRequest.setPassword("test!1234");
+        signupRequest.setFirstName("Prenom");
+        signupRequest.setLastName("Nom");
+
+        when(userRepository.existsByEmail("user@test.com")).thenReturn(false);
+        when(passwordEncoder.encode(signupRequest.getPassword())).thenReturn("test!1234");
+        //when(userRepository.save(any(User.class))).thenReturn(null);//ko
+        //thenAnswer permet de définir une réponse dynamique en fournissant l'argument donné dans save pour retourner l'entité
+        when(userRepository.save(any(User.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        var response = authController.registerUser(signupRequest);
+
+        assertNotNull(response);
+        assertTrue(response.getBody() instanceof MessageResponse);
+        MessageResponse messageResponse = (MessageResponse) response.getBody();
+        assertEquals("User registered successfully!", messageResponse.getMessage());
+    }
+
+    @Test
+    void registerUser_EmailAlreadyTaken() {
+        SignupRequest signupRequest = new SignupRequest();
+        signupRequest.setEmail("user@test.com");
+        signupRequest.setPassword("test!1234");
+        signupRequest.setFirstName("Prenom");
+        signupRequest.setLastName("Nom");
+
+        when(userRepository.existsByEmail("user@test.com")).thenReturn(true);
+
+        var response = authController.registerUser(signupRequest);
+
+        assertNotNull(response);
+        assertTrue(response.getBody() instanceof MessageResponse);
+        MessageResponse messageResponse = (MessageResponse) response.getBody();
+        assertEquals("Error: Email is already taken!", messageResponse.getMessage());
+    }
 }

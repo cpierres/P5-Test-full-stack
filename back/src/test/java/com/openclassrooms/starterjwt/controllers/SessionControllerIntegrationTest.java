@@ -258,4 +258,26 @@ public class SessionControllerIntegrationTest {
 
         verify(sessionService, times(1)).delete(sessionId);
     }
+
+    @Test
+    void create_ShouldReturnBadRequest_WhenDataIsInvalid() throws Exception {
+        // GIVEN
+        String invalidSessionRequestJson = "{\n" +
+            "  \"name\": \"\",\n" +
+            "  \"description\": \"\",\n" +
+            "  \"teacher_id\": null,\n" +
+            "  \"date\": null\n" +
+            "}";
+
+        // WHEN + THEN
+        mockMvc.perform(post("/api/session")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(invalidSessionRequestJson))
+                .andExpect(status().isBadRequest());
+
+        // Aucun service ou mapper ne doit être appelé
+        // (données validées à l'entrée avec @valid)
+        verifyNoInteractions(sessionService);
+        verifyNoInteractions(sessionMapper);
+    }
 }

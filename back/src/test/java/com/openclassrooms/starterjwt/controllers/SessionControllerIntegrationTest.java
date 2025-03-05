@@ -297,4 +297,19 @@ public class SessionControllerIntegrationTest {
         // Vérification que le service a été appelé avec les bons paramètres
         verify(sessionService, times(1)).participate(sessionId, userId);
     }
+
+    @Test
+    void participate_ShouldReturnBadRequest_WhenIdOrUserIdIsInvalid() throws Exception {
+        // GIVEN
+        String invalidSessionId = "A"; // ID non numérique
+        String invalidUserId = "Z"; // ID non numérique
+
+        // WHEN + THEN
+        mockMvc.perform(post("/api/session/{id}/participate/{userId}", invalidSessionId, invalidUserId)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+
+        // Vérification que le service n'est jamais appelé
+        verifyNoInteractions(sessionService);
+    }
 }

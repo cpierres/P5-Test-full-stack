@@ -280,4 +280,21 @@ public class SessionControllerIntegrationTest {
         verifyNoInteractions(sessionService);
         verifyNoInteractions(sessionMapper);
     }
+
+    @Test
+    void participate_ShouldReturnOk_WhenParticipationIsSuccessful() throws Exception {
+        Long sessionId = 1L;
+        Long userId = 10L;
+
+        // Simulation : Aucune exception levée par la méthode participate
+        doNothing().when(sessionService).participate(sessionId, userId);
+
+        // WHEN + THEN
+        mockMvc.perform(post("/api/session/{id}/participate/{userId}", sessionId, userId)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        // Vérification que le service a été appelé avec les bons paramètres
+        verify(sessionService, times(1)).participate(sessionId, userId);
+    }
 }

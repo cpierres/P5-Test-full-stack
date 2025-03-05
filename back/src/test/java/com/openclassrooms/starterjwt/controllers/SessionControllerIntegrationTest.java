@@ -312,4 +312,21 @@ public class SessionControllerIntegrationTest {
         // Vérification que le service n'est jamais appelé
         verifyNoInteractions(sessionService);
     }
+
+    @Test
+    void noLongerParticipate_ShouldReturnOk_WhenRemoveSuccessful() throws Exception {
+        // GIVEN
+        Long sessionId = 1L;
+        Long userId = 10L;
+
+        // Pas d'exception levée
+        doNothing().when(sessionService).noLongerParticipate(sessionId, userId);
+
+        mockMvc.perform(delete("/api/session/{id}/participate/{userId}", sessionId, userId)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        // Vérification que le service a été appelé avec les bons paramètres
+        verify(sessionService, times(1)).noLongerParticipate(sessionId, userId);
+    }
 }

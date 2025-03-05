@@ -39,7 +39,7 @@ public class UserControllerIntegrationTest {
     public void setup() {
         closeable = MockitoAnnotations.openMocks(this); // Initialise les mocks avec Mockito
         mockMvc = standaloneSetup(userController)
-                .build(); // Assure que les dépendances sont injectées correctement
+                .build();
     }
 
     @AfterEach
@@ -92,4 +92,29 @@ public class UserControllerIntegrationTest {
         verify(userService, times(1)).findById(userId);
         verify(userMapper, times(1)).toDto(user);
     }
+
+    @Test
+    void findById_ShouldReturnNotFound_WhenUserDoesNotExist() throws Exception {
+        // GIVEN
+        Long userId = 1L;
+        when(userService.findById(userId)).thenReturn(null);
+
+        // WHEN + THEN
+        mockMvc.perform(get("/api/user/{id}", userId)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+
+        verify(userService, times(1)).findById(userId);
+    }
+
+    @Test
+    void findById_ShouldReturnBadRequest_WhenIdIsInvalid() throws Exception {
+        // WHEN + THEN
+        mockMvc.perform(get("/api/user/{id}", "invalide-id")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+
+        verifyNoInteractions(userService);
+    }
+
 }

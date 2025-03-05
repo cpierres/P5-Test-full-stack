@@ -6,7 +6,7 @@ export default defineConfig({
   fixturesFolder: 'cypress/fixtures',
   video: false,
   env: {
-    useRealBackend: process.env['CYPRESS_USE_REAL_BACKEND'] === 'false',
+    useRealBackend: process.env['CYPRESS_USE_REAL_BACKEND'] === 'true',
   },
   e2e: {
     // We've imported your old cypress plugins here.

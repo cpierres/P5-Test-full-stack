@@ -13,13 +13,18 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 
 public class UserControllerIntegrationTest {
     @Mock
@@ -117,4 +122,100 @@ public class UserControllerIntegrationTest {
         verifyNoInteractions(userService);
     }
 
+    @Test
+    void delete_ShouldSuccessfullyDelete_WhenAuthorizedAndUserExists() throws Exception {
+        // GIVEN
+        Long userId = 1L;
+        User user = User.builder()
+                .id(userId)
+                .email("user@test.com")
+                .lastName("Nom")
+                .firstName("Prénom")
+                .password("test!1234")
+                .admin(false)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
+
+        // Simuler l'utilisateur connecté
+        UserDetails userDetails = new org.springframework.security.core.userdetails.User(
+                "user@test.com", "password", Collections.emptyList());
+        SecurityContextHolder.getContext().setAuthentication(
+                new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities())
+        );
+
+        when(userService.findById(userId)).thenReturn(user);
+
+        // WHEN + THEN
+        mockMvc.perform(delete("/api/user/{id}", userId)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        verify(userService, times(1)).findById(userId);
+        verify(userService, times(1)).delete(userId);
+
+        // Reset Security Context
+        SecurityContextHolder.clearContext();
+    }
+
+    @Test
+    void delete_ShouldReturnNotFound_WhenUserDoesNotExist() throws Exception {
+        // GIVEN
+        Long userId = 1L;
+
+        when(userService.findById(userId)).thenReturn(null);
+
+        // WHEN + THEN
+        mockMvc.perform(delete("/api/user/{id}", userId)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+
+        verify(userService, times(1)).findById(userId);
+        verify(userService, never()).delete(userId);
+    }
+
+    @Test
+    void delete_ShouldReturnBadRequest_WhenIdIsInvalid() throws Exception {
+        // WHEN + THEN
+        mockMvc.perform(delete("/api/user/{id}", "invalid-id")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+
+        verifyNoInteractions(userService);
+    }
+
+    @Test
+    void delete_ShouldReturnUnauthorized_WhenUserIsNotAuthorized() throws Exception {
+        // GIVEN
+        Long userId = 1L;
+        User user = User.builder()
+                .id(userId)
+                .email("user@test.com")
+                .lastName("Nom")
+                .firstName("Prénom")
+                .password("test!1234")
+                .admin(false)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
+
+        // Simuler un utilisateur connecté différent
+        UserDetails userDetails = new org.springframework.security.core.userdetails.User(
+                "otheruser@test.com", "password", Collections.emptyList());
+        SecurityContextHolder.getContext().setAuthentication(
+                new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities())
+        );
+
+        when(userService.findById(userId)).thenReturn(user);
+
+        // WHEN + THEN
+        mockMvc.perform(delete("/api/user/{id}", userId)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isUnauthorized());
+
+        verify(userService, times(1)).findById(userId);
+        verify(userService, never()).delete(userId);
+
+        SecurityContextHolder.clearContext();
+    }
 }

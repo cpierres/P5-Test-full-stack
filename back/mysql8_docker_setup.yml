@@ -13,4 +13,8 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - N:/docker/mysql8-data-ocr-P5:/var/lib/mysql
+      - mysql8-data-ocr-P5:/var/lib/mysql
+      - ../ressources/sql:/docker-entrypoint-initdb.d
+
+volumes:
+  mysql8-data-ocr-P5:

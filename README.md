@@ -344,6 +344,7 @@ Comme j'ai fait en sorte qu'optionnellement mes tests e2e puissent travailler av
 
 Tous les services et controllers sont parfaitement couverts.
 Mon taux de couverture global du back n'est pas à 80% mais en faire plus me parait inutile (sauf erreur de ma part à voir avec mentor).
+
 ---
 
 ## Rapports de couverture de tests

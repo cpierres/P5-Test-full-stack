@@ -340,10 +340,11 @@ Sur les controllers, ce sont surtout des tests d'intégration du fait du besoin 
 pour la simulation du contexte de sécurité et des requêtes HTTP/controllers REST (MockMvc).
 
 Comme j'ai fait en sorte qu'optionnellement mes tests e2e puissent travailler avec la base de données réelle 
-(avec données de test), j'ai pensé que faire des tests d'intégration sur les mappers par exemple pouvaient être redondants.
+(avec données de test), j'ai pensé que faire des tests d'intégration sur les mappers par exemple pouvaient être 
+redondants.
 
 Tous les services et controllers sont parfaitement couverts.
-Mon taux de couverture global du back n'est pas à 80% mais en faire plus me parait inutile (sauf erreur de ma part à voir avec mentor).
+Le taux de couverture global du back n'est pas à 80% mais en faire plus ne me parait pas utile.
 
 ---
 
@@ -357,5 +358,5 @@ Mon taux de couverture global du back n'est pas à 80% mais en faire plus me par
 
 ## Ressources supplémentaires
 
-- Angular : Consultez le README dans `front/README.md`.
-- Spring Boot : Consultez le README dans `back/README.md`.
+- Angular : Consultez le README dans `front/README.md`
+- Spring Boot : Consultez le README dans `back/README.md`

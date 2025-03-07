@@ -1,6 +1,14 @@
 # Projet P5 - Test Full Stack (Front et Back)
 
-Ce projet est une application web full stack comprenant deux sous-projets : un frontend développé avec Angular et un backend développé avec Spring Boot. Ce document vous guidera dans l'installation, l'exécution, le test, et la génération des rapports de couverture pour ce projet.
+Ce projet est une application web full stack comprenant deux sous-projets : un frontend développé avec Angular et un 
+backend développé avec Spring Boot. 
+Ce document vous guidera dans l'installation, l'exécution, le test, et la génération des rapports de couverture pour 
+ce projet.
+
+## Auteur et contexte
+- Auteur : Christophe Pierrès
+- Dans le cadre du projet N°5 d'OpenClassrooms, en vue d'obtenir la certification
+  **Expert en développement logiciel**. Plus d'informations disponibles [ici](https://www.francecompetences.fr/recherche/rncp/36912/)
 
 ## Table des matières
 1. [Prérequis](#prérequis)
@@ -336,15 +344,16 @@ Actions pour le profil non-administrateur
 
 Les tests backend sont basés sur des mocks pour simuler les appels aux services et aux bases de données.
 Sur les services et les autres objets, j'ai réalisé essentiellement des tests unitaires.
-Sur les controllers, ce sont surtout des tests d'intégration du fait du besoin de bénéficier des facilités de Spring 
-pour la simulation du contexte de sécurité et des requêtes HTTP/controllers REST (MockMvc).
+Sur les controllers, ce sont surtout des tests d'intégration du fait du besoin de bénéficier des facilités de 
+Spring Test pour la simulation du contexte de sécurité et des requêtes HTTP/controllers REST (MockMvc).
 
-Comme j'ai fait en sorte qu'optionnellement mes tests e2e puissent travailler avec la base de données réelle 
+Comme j'ai fait en sorte qu'**optionnellement mes tests e2e puissent travailler avec la base de données réelle** 
 (avec données de test), j'ai pensé que faire des tests d'intégration sur les mappers par exemple pouvaient être 
 redondants.
 
-Tous les services et controllers sont parfaitement couverts.
-Le taux de couverture global du back n'est pas à 80% mais en faire plus ne me parait pas utile.
+Le taux de couverture global du back n'est pas à 80% mais en faire plus ne me parait pas utile puisque les 
+objets les plus sensibles (services et controllers) sont parfaitement couverts et que les tests e2e lorsque
+utilisés sur le vrai backend couvrent toute la chaine.
 
 ---
 

@@ -113,6 +113,9 @@ Pour démarrer le frontend :
    ```
    ![Résultats des tests unitaires Jest](assets/docs/images/tests-unitaires-jest-coverage.png)
 
+Si vous regardez le code des tests jest, vous observerez que ceux-ci
+sont généralement scindés en deux groupes. Par exemple :
+![jest-separation-tu-ti.png](assets/docs/images/jest-separation-tu-ti.png)
 ---
 
 #### b) Tests E2E avec mocks (Cypress)
@@ -122,8 +125,9 @@ Pour démarrer le frontend :
    npm run e2e:ci
    ```
 2. Consultez la sortie console (rapport détaillé) :
-<details>
+<details style="font-size: 12px; font-family: 'Courier New', monospace; background-color: #f8f8f8;">
 <summary>Déplier pour voir le rapport console</summary>
+<pre style="font-size: 8px; font-family: 'Courier New', monospace; background-color: #f8f8f8; ">
   (Run Starting)
 
 ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
@@ -245,7 +249,7 @@ Actions pour le profil non-administrateur
 │ √  003session-yoga.cy.ts                    00:19        9        9        -        -        - │
 └────────────────────────────────────────────────────────────────────────────────────────────────┘
 √  All specs passed!                        00:27       17       17        -        -        -
-
+</pre>
 </details>
 
 3. Ouvrez le rapport HTML de couverture :

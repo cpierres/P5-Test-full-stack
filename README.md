@@ -6,10 +6,16 @@ Ce projet est une application web full stack comprenant deux sous-projets : un f
 1. [Prérequis](#prérequis)
 2. [Installation de la base de données](#installation-de-la-base-de-données)
 3. [Installation de l'application](#installation-de-lapplication)
+   1. [Backend (Spring Boot)](#backend-spring-boot)
+   2. [Frontend (Angular)](#frontend-angular)
 4. [Exécution de l'application](#exécution-de-lapplication)
+   1. [Backend](#backend)
+   2. [Frontend](#frontend)
 5. [Exécution des tests](#exécution-des-tests)
-   - [Tests front](#tests-front)
-   - [Tests back](#tests-back)
+   - [Tests Frontend](#tests-frontend)
+      1. [Tests unitaires Jest](#a-tests-unitaires-jest)
+      2. [Tests E2E avec mocks (Cypress)](#b-tests-e2e-avec-mocks-cypress)
+   - [Tests Backend](#tests-backend)
 6. [Rapports de couverture](#rapports-de-couverture)
 
 ---
@@ -75,7 +81,7 @@ Avant de commencer, assurez-vous d'avoir installé les outils suivants :
 
 ## Exécution de l'application
 
-### Backend (Spring Boot)
+### Backend
 Pour démarrer l'API backend :
 1. Assurez-vous que Docker (MySQL) est opérationnel.
 2. Exécutez la commande suivante dans le répertoire `back` :
@@ -83,7 +89,7 @@ Pour démarrer l'API backend :
    mvn spring-boot:run
    ```
 
-### Frontend (Angular)
+### Frontend
 Pour démarrer le frontend :
 1. Accédez au répertoire `front`.
 2. Démarrez l'application :
@@ -99,6 +105,7 @@ Pour démarrer le frontend :
 ### Tests Frontend
 
 #### a) Tests unitaires Jest
+
 1. Positionnez-vous dans le répertoire `front` :
    ```bash
    cd front
@@ -113,9 +120,11 @@ Pour démarrer le frontend :
    ```
    ![Résultats des tests unitaires Jest](assets/docs/images/tests-unitaires-jest-coverage.png)
 
-Si vous regardez le code des tests jest, vous observerez que ceux-ci
-sont généralement scindés en deux groupes. Par exemple :
-![jest-separation-tu-ti.png](assets/docs/images/jest-separation-tu-ti.png)
+
+   Si vous regardez le code des tests jest, vous observerez que ceux-ci
+   sont généralement scindés en deux groupes. Par exemple :
+   ![jest-separation-tu-ti.png](assets/docs/images/jest-separation-tu-ti.png)
+
 ---
 
 #### b) Tests E2E avec mocks (Cypress)

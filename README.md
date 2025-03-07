@@ -302,7 +302,7 @@ Actions pour le profil non-administrateur
 
    ⚠️ Si nécessaire, réinitialisez la base de données avec le script SQL avant de lancer les tests :
    ```bash
-   mysql -u root -p < back/ressources/sq/script1.sql
+   mysql -u root -p < ressources/sql/script1.sql
    ```
 
 ---
@@ -322,7 +322,6 @@ Actions pour le profil non-administrateur
    target/site/jacoco/index.html
    ```
 
-   **Copie d'écran** :
    - Rapport global (DTO exclus) : 
    ![TU-TI-backend-jacoco-1.png](assets/docs/images/TU-TI-backend-jacoco-1.png)
 
@@ -338,7 +337,7 @@ Tous les services et controllers sont parfaitement couverts.
 Mon taux de couverture global du back n'est pas à 80% mais en faire plus me parait inutile (sauf erreur de ma part à voir avec mentor).
 ---
 
-## Rapports de couverture
+## Rapports de couverture de tests
 
 - **Frontend Jest** : Disponible ici : `front/coverage/jest/lcov-report/index.html`
 - **Frontend Cypress** : Disponible ici : `front/coverage/lcov-report/index.html`

@@ -2,8 +2,8 @@
 
 Ce projet est une application web full stack comprenant deux sous-projets : un frontend développé avec Angular et un 
 backend développé avec Spring Boot. 
-Ce document vous guidera dans l'installation, l'exécution, le test, et la génération des rapports de couverture pour 
-ce projet.
+Ce document vous guidera dans l'installation, l'exécution, les tests unitaires et d'intégration pour le front et 
+le back, et la génération des rapports de couverture pour ce projet.
 
 ## Auteur et contexte
 - Auteur : Christophe Pierrès

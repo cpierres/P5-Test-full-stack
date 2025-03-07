@@ -32,7 +32,6 @@ class SessionMapperTest {
 
     @Test
     void toEntity_ShouldMapDtoToEntityCorrectly() {
-        // Arrange
         SessionDto sessionDto = new SessionDto();
         sessionDto.setDescription("Test Session");
         sessionDto.setTeacher_id(1L);
@@ -47,10 +46,8 @@ class SessionMapperTest {
         when(userService.findById(2L)).thenReturn(user1);
         when(userService.findById(3L)).thenReturn(user2);
 
-        // Act
         Session session = sessionMapper.toEntity(sessionDto);
 
-        // Assert
         assertNotNull(session);
         assertEquals("Test Session", session.getDescription());
         assertNotNull(session.getTeacher());

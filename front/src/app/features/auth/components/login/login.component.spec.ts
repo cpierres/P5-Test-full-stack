@@ -15,7 +15,7 @@ import {of, throwError} from "rxjs";
 import {AuthService} from "../../services/auth.service";
 import {Router} from "@angular/router";
 
-describe('LoginComponent - Tests unitaires', () => {
+describe('LoginComponent - Tests unitaires et d\'intégration', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
   let authServiceMock: any;
@@ -86,44 +86,6 @@ describe('LoginComponent - Tests unitaires', () => {
   });
 
   describe('LoginComponent - Tests d’intégration', () => {
-    // let component: LoginComponent;
-    // let fixture: ComponentFixture<LoginComponent>;
-    // let authServiceMock: any;
-    // let sessionServiceMock: any;
-    // const routerSpy = {navigate: jest.fn()};
-    //
-    // beforeEach(async () => {
-    //   authServiceMock = {
-    //     login: jest.fn().mockReturnValue(of({userId: 1})), // Simule une réponse de succès
-    //   };
-    //   sessionServiceMock = {
-    //     logIn: jest.fn(),
-    //   };
-    //
-    //   await TestBed.configureTestingModule({
-    //     declarations: [LoginComponent],
-    //     providers: [
-    //       {provide: AuthService, useValue: authServiceMock},
-    //       {provide: SessionService, useValue: sessionServiceMock},
-    //       {provide: Router, useValue: routerSpy}, // Remplace Router par un spy
-    //     ],
-    //     imports: [
-    //       RouterTestingModule,
-    //       HttpClientModule,
-    //       BrowserAnimationsModule,
-    //       ReactiveFormsModule,
-    //       MatCardModule,
-    //       MatFormFieldModule,
-    //       MatInputModule,
-    //       MatIconModule,
-    //     ],
-    //   }).compileComponents();
-    //
-    //   fixture = TestBed.createComponent(LoginComponent);
-    //   component = fixture.componentInstance;
-    //   fixture.detectChanges();
-    // });
-
     it('doit afficher un message d’erreur si onError est vrai', () => {
       component.onError = true;
       fixture.detectChanges(); // Met à jour le DOM

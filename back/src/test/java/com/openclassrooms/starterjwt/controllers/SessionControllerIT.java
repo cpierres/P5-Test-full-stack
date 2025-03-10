@@ -22,7 +22,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
 
 import org.springframework.test.web.servlet.MockMvc;
 
-public class SessionControllerIntegrationTest {
+public class SessionControllerIT {
 
     @Mock
     private SessionService sessionService;
@@ -35,7 +35,7 @@ public class SessionControllerIntegrationTest {
 
     private MockMvc mockMvc;
 
-    public SessionControllerIntegrationTest() {
+    public SessionControllerIT() {
         MockitoAnnotations.openMocks(this);
         this.mockMvc = standaloneSetup(sessionController).build();
     }

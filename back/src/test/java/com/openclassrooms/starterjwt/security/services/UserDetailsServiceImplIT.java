@@ -16,7 +16,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import com.openclassrooms.starterjwt.models.User;
 import com.openclassrooms.starterjwt.repository.UserRepository;
 
-class UserDetailsServiceImplIntegrationTest {
+class UserDetailsServiceImplIT {
 
     @Mock
     private UserRepository userRepository;

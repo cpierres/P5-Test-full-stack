@@ -26,7 +26,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.time.LocalDateTime;
 import java.util.Collections;
 
-public class UserControllerIT {
+public class UserControllerTest {
     @Mock
     private UserService userService;
 

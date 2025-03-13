@@ -299,7 +299,7 @@ public class SessionControllerTest {
     }
 
     @Test
-    void participate_ShouldReturnBadRequest_WhenIdOrUserIdIsInvalid() throws Exception {
+    void participate_ShouldReturnBadRequest_WhenSessionIdOrUserIdIsInvalid() throws Exception {
         // GIVEN
         String invalidSessionId = "A"; // ID non numérique
         String invalidUserId = "Z"; // ID non numérique
@@ -331,7 +331,7 @@ public class SessionControllerTest {
     }
 
     @Test
-    void noLongerParticipate_ShouldReturnBadRequest_WhenIdSessionOrUserIdAreInvalid() throws Exception {
+    void noLongerParticipate_ShouldReturnBadRequest_WhenSessionIdOrUserIdAreInvalid() throws Exception {
         // GIVEN
         String invalidSessionId = "A"; // non numérique
         String invalidUserId = "A";

@@ -53,9 +53,9 @@ public class UserControllerIT {
                 mockUser.getUpdatedAt()
         );
 
-        when(userService.findById(1L)).thenReturn(mockUser);
+        when(userService.findById(userId)).thenReturn(mockUser);
 
-        mockMvc.perform(get("/api/user/1")
+        mockMvc.perform(get("/api/user/"+userId)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(userId))

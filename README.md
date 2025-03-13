@@ -51,9 +51,10 @@ Avant de commencer, assurez-vous d'avoir installé les outils suivants :
    ```
 
 2. **Informations importantes :**  
-   - Le script SQL d'importation des données de base sera exécuté automatiquement.
+   - Cette base de dev écoute sur le port standard 3306
+   - Le script SQL, de génération du schéma et d'importation des données de base, sera exécuté automatiquement.
    - Nom du conteneur : `mysql8-data-ocr-P5`
-   - Un volume nommé `mysql8-data-ocr-P5` est automatiquement configuré pour persister les données.
+   - Un volume nommé `mysql8-data-ocr-P5` est automatiquement configuré pour persister les données sur votre machine.
 
    Pour vérifier que le conteneur fonctionne correctement, exécutez la commande suivante :
 
@@ -317,7 +318,7 @@ Actions pour le profil non-administrateur
    npm run cypress:open-real-backend
    ```
 
-   ⚠️ Si nécessaire, réinitialisez la base de données avec le script SQL avant de lancer les tests :
+   ⚠️ Si nécessaire, réinitialisez la base de données avec le script SQL avant de relancer les tests :
    ```bash
    mysql -u root -p < ressources/sql/script1.sql
    ```

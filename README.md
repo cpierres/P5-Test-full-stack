@@ -352,6 +352,9 @@ Comme j'ai fait en sorte qu'**optionnellement mes tests e2e puissent travailler 
 (avec données de test), j'ai pensé que faire des tests d'intégration sur les mappers par exemple pouvaient être 
 redondants.
 
+Les tests d'intégration du backend Spring s'exécutent spécfigiquement sur une base H2 avec dialecte MySQL pour
+éviter toute interférence avec la base de développement.
+
 Le taux de couverture global du back n'est pas à 80% mais en faire plus ne me parait pas utile puisque les 
 objets les plus sensibles (services et controllers) sont parfaitement couverts et que les tests e2e lorsque
 utilisés sur le vrai backend couvrent toute la chaine.

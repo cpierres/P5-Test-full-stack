@@ -331,11 +331,15 @@ Actions pour le profil non-administrateur
    ```bash
    cd back
    ```
-2. Démarrez les tests unitaires et d'intégration avec Maven :
+2. Démarrez les tests unitaires avec Maven (tests rapides basés sur des mocks) :
    ```bash
    mvn clean test
    ```
-3. Consultez le rapport de couverture généré par JaCoCo :
+3. ou bien, démarrez <u>en plus</u> les tests d'intégration systèmes avec Maven (tests suffixés par IT) :
+   ```bash
+   mvn clean validate
+   ```
+4. Consultez le rapport de couverture généré par JaCoCo :
    ```
    target/site/jacoco/index.html
    ```
@@ -343,21 +347,19 @@ Actions pour le profil non-administrateur
    - Rapport global (DTO exclus) : 
    ![TU-TI-backend-jacoco-1.png](assets/docs/images/TU-TI-backend-jacoco-1.png)
 
-Les tests backend sont basés sur des mocks pour simuler les appels aux services et aux bases de données.
-Sur les services et les autres objets, j'ai réalisé essentiellement des tests unitaires.
-Sur les controllers, ce sont surtout des tests d'intégration du fait du besoin de bénéficier des facilités de 
-Spring Test pour la simulation du contexte de sécurité et des requêtes HTTP/controllers REST (MockMvc).
+Les tests backend sont basés sur des mocks pour simuler les appels aux services et aux bases de données
+d'une manière rapide.
+Sur les controllers, j'ai en plus réalisé des tests d'intégration systèmes (que j'aurais pu suffixer par SIT
+plutôt que IT) afin de mieux tester les interactions complètes avec les services et la sécurité.
+Afin d'éviter toute interférence avec la base de données de dev, j'ai défini spécifiquement pour les tests une base 
+mémoire H2 avec dialecte mysql. Si l'application avait été plus complexe, j'aurais opté pour un TestContainer mysql
+mais dans le cas présent, la base H2 fonctionne bien et est plus rapide.
 
 Comme j'ai fait en sorte qu'**optionnellement mes tests e2e puissent travailler avec la base de données réelle** 
-(avec données de test), j'ai pensé que faire des tests d'intégration sur les mappers par exemple pouvaient être 
-redondants.
+(avec données de test), ceci permet de valider totalement les interactions systèmes.
 
-Les tests d'intégration du backend Spring s'exécutent spécfigiquement sur une base H2 avec dialecte MySQL pour
-éviter toute interférence avec la base de développement.
-
-Le taux de couverture global du back n'est pas à 80% mais en faire plus ne me parait pas utile puisque les 
-objets les plus sensibles (services et controllers) sont parfaitement couverts et que les tests e2e lorsque
-utilisés sur le vrai backend couvrent toute la chaine.
+Les objets les plus sensibles (services et controllers) sont parfaitement couverts, et les tests e2e, lorsque
+lancés sur le "vrai backend", permettent de couvrir toute la chaine.
 
 ---
 

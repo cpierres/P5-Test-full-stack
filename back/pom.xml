@@ -162,15 +162,6 @@
                                             <minimum>0.9</minimum>
                                         </limit>
                                     </limits>
-                                    <excludes>
-                                        <exclude>**/dto/*.class</exclude>
-                                        <exclude>**/models/*.class</exclude>
-                                        <exclude>**/request/*.class</exclude>
-                                        <exclude>**/response/*.class</exclude>
-                                        <exclude>**/jwt/*.class</exclude>
-                                        <exclude>**/starterjwt/*.class</exclude>
-                                        <exclude>**/mapper/*.class</exclude>
-                                    </excludes>
                                 </rule>
                             </rules>
                         </configuration>
@@ -186,6 +177,7 @@
                         <exclude>**/jwt/*.class</exclude>
                         <exclude>**/starterjwt/*.class</exclude>
                         <exclude>**/mapper/*.class</exclude>
+                        <exclude>**/services/UserDetailsImpl*.class</exclude>
                     </excludes>
                 </configuration>
             </plugin>

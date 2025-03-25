@@ -43,11 +43,11 @@ Avant de commencer, assurez-vous d'avoir installé les outils suivants :
 
 ## Installation de la base de données
 
-1. **Démarrer le conteneur MySQL**  
+1. **Démarrer le conteneur Docker MySQL**  
    À partir de la racine du projet, lancez la commande suivante pour démarrer la base de données MySQL avec Docker Compose :
 
    ```bash
-   docker-compose -f back/mysql8_docker_setup.yml up -d
+   docker-compose --project-name cpierres_p5_back_test -f back/mysql8_docker_setup.yml up -d
    ```
 
 2. **Informations importantes :**  

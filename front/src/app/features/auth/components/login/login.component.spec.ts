@@ -20,11 +20,11 @@ describe('LoginComponent - Tests unitaires et d\'intégration', () => {
   let fixture: ComponentFixture<LoginComponent>;
   let authServiceMock: any;
   let sessionServiceMock: any;
-  const routerSpy = {navigate: jest.fn()};
+  const routerSpy = {navigate: jest.fn()};//suffit plutôt qu'un vrai spy sur l'objet réel
 
   beforeEach(async () => {
     authServiceMock = {
-      login: jest.fn().mockReturnValue(of({userId: 1})), // Simule une réponse de succès
+      login: jest.fn().mockReturnValue(of({id: 1})), // Simule une réponse de succès
     };
     sessionServiceMock = {
       logIn: jest.fn(),
@@ -35,7 +35,7 @@ describe('LoginComponent - Tests unitaires et d\'intégration', () => {
       providers: [
         {provide: AuthService, useValue: authServiceMock},
         {provide: SessionService, useValue: sessionServiceMock},
-        {provide: Router, useValue: routerSpy}, // Remplace Router par un spy
+        {provide: Router, useValue: routerSpy}, // Remplace Router par un spy simplifié
       ],
       imports: [
         RouterTestingModule,
@@ -82,6 +82,13 @@ describe('LoginComponent - Tests unitaires et d\'intégration', () => {
       const emailControl = component.form.get('email');
       emailControl?.setValue('toto@@toto.com');
       expect(emailControl?.invalid).toBeTruthy();
+    });
+
+    it('doit rediriger l\'utilisateur sur /sessions en cas de succès', () => {
+      component.form.setValue({ email: 'user@example.com', password: 'password' });
+      component.submit();
+
+      expect(routerSpy.navigate).toHaveBeenCalledWith(['/sessions']);
     });
   });
 

@@ -94,7 +94,7 @@ describe('SessionService', () => {
     });
   });
 
-  describe('Tests d\'Intégration', () => {
+  describe('Tests fonctionnels avancés', () => {
     const ajv = new Ajv({});
     const sessionSchema = {
       type: 'object',

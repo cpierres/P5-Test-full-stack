@@ -296,9 +296,9 @@ Actions pour le profil non-administrateur
 
    **Copies d'écran :**
    - Liste des specs : ![Cypress specs](assets/docs/images/cypress-open-specs.png)
-   - Tests de register : ![Register spec](assets/docs/images/cypress-1register-spec.png)
-   - Tests de login : ![Login spec](assets/docs/images/cypress-2login-spec.png)
-   - Gestion des sessions de yoga : ![Session spec](assets/docs/images/cypress-3session-yoga-spec.png)
+   - Tests des fonctionnalités de Register : ![Register spec](assets/docs/images/cypress-1register-spec.png)
+   - Tests des fonctionnalités de Login : ![Login spec](assets/docs/images/cypress-2login-spec.png)
+   - Gestion des fonctionnalités pour les Sessions de yoga : ![Session spec](assets/docs/images/cypress-3session-yoga-spec.png)
 
 ---
 

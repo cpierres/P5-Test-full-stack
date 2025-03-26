@@ -318,11 +318,21 @@ Actions pour le profil non-administrateur
    npm run cypress:open-real-backend
    ```
 
-   ⚠️ Si nécessaire, réinitialisez la base de données avec le script SQL avant de relancer les tests :
-   ```bash
-   mysql -u root -p < ressources/sql/script1.sql
-   ```
+⚠️ Si nécessaire, réinitialisez la base de données avec le script SQL avant de relancer les tests :
 
+Se positionner sur la racine du projet puis en cas d'exécution sous cmd :   
+```bash
+docker exec -i mysql8-data-ocr-P5 mysql -uroot -popencr_pw_root < ressources/sql/script.sql
+```
+Si exécution sous powershell plus ancien que la version 7 :
+```powershell
+cmd /c "docker exec -i mysql8-data-ocr-P5 mysql -uroot -popencr_pw_root < ressources/sql/script.sql"
+```
+
+Si exécution sous powershell version 7 ou + :
+```powershell
+Get-Content -Encoding UTF8 ressources/sql/script.sql | docker exec -i mysql8-data-ocr-P5 mysql -uroot -popencr_pw_root
+```
 ---
 
 ### Tests Backend
@@ -349,7 +359,7 @@ Actions pour le profil non-administrateur
 
 Les tests backend sont basés sur des mocks pour simuler les appels aux services et aux bases de données
 d'une manière rapide.
-Sur les controllers, j'ai en plus réalisé des tests d'intégration systèmes (que j'aurais pu suffixer par SIT
+Sur les controllers, des tests d'intégration systèmes ont été réalisés (que j'aurais pu suffixer par SIT
 plutôt que IT) afin de mieux tester les interactions complètes avec les services et la sécurité.
 Afin d'éviter toute interférence avec la base de données de dev, j'ai défini spécifiquement pour les tests une base 
 mémoire H2 avec dialecte mysql. Si l'application avait été plus complexe, j'aurais opté pour un TestContainer mysql
@@ -371,7 +381,3 @@ lancés sur le "vrai backend", permettent de couvrir toute la chaine.
 
 ---
 
-## Ressources supplémentaires
-
-- Angular : Consultez le README dans `front/README.md`
-- Spring Boot : Consultez le README dans `back/README.md`

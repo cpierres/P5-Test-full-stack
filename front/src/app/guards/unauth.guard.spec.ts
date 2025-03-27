@@ -47,6 +47,6 @@ describe('UnauthGuard', () => {
     const canActivate = guard.canActivate();
 
     expect(canActivate).toBeFalsy();
-    expect(router.navigate).toHaveBeenCalledWith(['rentals']);
+    expect(router.navigate).toHaveBeenCalledWith(['sessions']);
   });
 });

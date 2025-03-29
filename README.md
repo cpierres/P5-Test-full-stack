@@ -134,6 +134,9 @@ Pour démarrer le frontend :
    sont généralement scindés en deux groupes. Par exemple :
    ![jest-separation-tu-ti.png](assets/docs/images/jest-separation-tu-ti.png)
 
+Vous pouvez noter que curieusement les rapports de couverture lancés par ces 2 commandes différentes ne génèrent pas 
+tout à fait les même résultats ! Ils sont néanmoins très proches.
+
 ---
 
 #### b) Tests E2E avec mocks (Cypress)
@@ -320,7 +323,7 @@ Actions pour le profil non-administrateur
 
 ⚠️ Si nécessaire, réinitialisez la base de données avec le script SQL avant de relancer les tests :
 
-Se positionner sur la racine du projet puis en cas d'exécution sous cmd :   
+Se positionner sur la racine du projet puis en cas d'exécution sous cmd Windows ou autres OS :   
 ```bash
 docker exec -i mysql8-data-ocr-P5 mysql -uroot -popencr_pw_root < ressources/sql/script.sql
 ```
@@ -328,11 +331,12 @@ Si exécution sous powershell plus ancien que la version 7 :
 ```powershell
 cmd /c "docker exec -i mysql8-data-ocr-P5 mysql -uroot -popencr_pw_root < ressources/sql/script.sql"
 ```
-
 Si exécution sous powershell version 7 ou + :
 ```powershell
 Get-Content -Encoding UTF8 ressources/sql/script.sql | docker exec -i mysql8-data-ocr-P5 mysql -uroot -popencr_pw_root
 ```
+A noter que j'avais eu un souci avec les accentués lorsque ma commande docker était lancée depuis Powershell 5 
+(malgré le fait que le script sql est bien en UTF8).
 ---
 
 ### Tests Backend

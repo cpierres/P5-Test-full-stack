@@ -285,8 +285,11 @@ Actions pour le profil non-administrateur
    Détail du rapport NYC :  
    ![Détail NYC](assets/docs/images/tests-e2e-nyc-report-detail.png)
 
+> **Note :**
 Vous pouvez noter que curieusement les rapports de couverture lancés par ces 2 commandes différentes 
-(npm run e2e:ci et npm run e2e:coverage) ne génèrent pas tout à fait les même résultats. Ils sont néanmoins très proches.
+(npm run e2e:ci et npm run e2e:coverage) ne génèrent pas tout à fait les même résultats ! 
+Ils sont néanmoins très proches.
+
 ---
 
 #### c) Tests E2E en mode interactif (mocks)
@@ -334,8 +337,11 @@ Si exécution sous powershell version 7 ou + :
 ```powershell
 Get-Content -Encoding UTF8 ressources/sql/script.sql | docker exec -i mysql8-data-ocr-P5 mysql -uroot -popencr_pw_root
 ```
+
+> **Note :**
 A noter que j'avais eu un souci avec les accentués lorsque ma première commande docker était lancée depuis Powershell 5 
 (malgré le fait que le script sql est bien en UTF8).
+
 ---
 
 ### Tests Backend
@@ -360,6 +366,7 @@ A noter que j'avais eu un souci avec les accentués lorsque ma première command
    - Rapport global (DTO exclus) : 
    ![TU-TI-backend-jacoco-1.png](assets/docs/images/TU-TI-backend-jacoco-1.png)
 
+> **Note :**
 Les tests backend sont basés sur des mocks pour simuler les appels aux services et aux bases de données
 d'une manière rapide.
 Sur les controllers, des tests d'intégration systèmes ont été réalisés (que j'aurais pu suffixer par SIT
@@ -367,10 +374,8 @@ plutôt que IT) afin de mieux tester les interactions complètes avec les servic
 Afin d'éviter toute interférence avec la base de données de dev, j'ai défini spécifiquement pour les tests une base 
 mémoire H2 avec dialecte mysql. Si l'application avait été plus complexe, j'aurais opté pour un TestContainer mysql
 mais dans le cas présent, la base H2 fonctionne bien et est plus rapide.
-
 Comme j'ai fait en sorte qu'**optionnellement mes tests e2e puissent travailler avec la base de données réelle** 
 (avec données de test), ceci permet de valider totalement les interactions systèmes.
-
 Les objets les plus sensibles (services et controllers) sont parfaitement couverts, et les tests e2e, lorsque
 lancés sur le "vrai backend", permettent de couvrir toute la chaine.
 

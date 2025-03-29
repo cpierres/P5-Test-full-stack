@@ -335,7 +335,7 @@ Si exécution sous powershell version 7 ou + :
 ```powershell
 Get-Content -Encoding UTF8 ressources/sql/script.sql | docker exec -i mysql8-data-ocr-P5 mysql -uroot -popencr_pw_root
 ```
-A noter que j'avais eu un souci avec les accentués lorsque ma commande docker était lancée depuis Powershell 5 
+A noter que j'avais eu un souci avec les accentués lorsque ma première commande docker était lancée depuis Powershell 5 
 (malgré le fait que le script sql est bien en UTF8).
 ---
 

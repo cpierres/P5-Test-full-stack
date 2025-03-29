@@ -134,9 +134,6 @@ Pour démarrer le frontend :
    sont généralement scindés en deux groupes. Par exemple :
    ![jest-separation-tu-ti.png](assets/docs/images/jest-separation-tu-ti.png)
 
-Vous pouvez noter que curieusement les rapports de couverture lancés par ces 2 commandes différentes ne génèrent pas 
-tout à fait les même résultats ! Ils sont néanmoins très proches.
-
 ---
 
 #### b) Tests E2E avec mocks (Cypress)
@@ -288,6 +285,8 @@ Actions pour le profil non-administrateur
    Détail du rapport NYC :  
    ![Détail NYC](assets/docs/images/tests-e2e-nyc-report-detail.png)
 
+Vous pouvez noter que curieusement les rapports de couverture lancés par ces 2 commandes différentes 
+(npm run e2e:ci et npm run e2e:coverage) ne génèrent pas tout à fait les même résultats. Ils sont néanmoins très proches.
 ---
 
 #### c) Tests E2E en mode interactif (mocks)
